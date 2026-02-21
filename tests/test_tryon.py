@@ -5,7 +5,7 @@ from backend.tryon import run_tryon
 
 # Local file paths
 SAMPLE_HUMAN_IMG = "photos/IMG_2759-2.png"
-SAMPLE_GARMENT_IMG = "test_images/ed65cdb0f0a44451a47f3d43747c53c719ea34a7.jpg"
+SAMPLE_GARMENT_IMG = "test_images/chaining/04060233800-e1.jpg"
 
 
 async def main():
@@ -18,7 +18,7 @@ async def main():
         result_url = await run_tryon(
             human_img_url=SAMPLE_HUMAN_IMG,
             garm_img_url=SAMPLE_GARMENT_IMG,
-            category="upper_body",
+            category="lower_body",
         )
         print(f"Success --> Result: {result_url}")
     except RuntimeError as e:
