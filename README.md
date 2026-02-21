@@ -1,1 +1,2 @@
-# hacked2026pilips
+# Fitted
+Fittedis a Chrome extension that lets users virtually try on clothes while browsing online stores. User uploads their photos once, then clicks "Try On" on any product image → sees themselves wearing that garment.
