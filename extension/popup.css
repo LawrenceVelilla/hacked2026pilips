@@ -1,0 +1,160 @@
+:root {
+  --bg: #f3f2ef;
+  --ink: #101010;
+  --muted: #6f6f6f;
+  --chip: #101010;
+  --field: #d9d9d9;
+  --line: #dfddd8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  width: 380px;
+  height: 600px;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
+}
+
+.app {
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr auto auto;
+  padding: 10px 10px 8px;
+  gap: 8px;
+}
+
+.topbar {
+  display: grid;
+  grid-template-columns: 40px 1fr 40px;
+  align-items: center;
+}
+
+h1 {
+  margin: 0;
+  text-align: center;
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  letter-spacing: 1.5px;
+  font-size: 42px;
+  line-height: 1;
+}
+
+.icon-btn {
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.canvas-wrap {
+  position: relative;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fbfaf8;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+#stage-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.upload-overlay {
+  position: absolute;
+  inset: 0;
+  display: none;
+  align-content: center;
+  justify-items: center;
+  text-align: center;
+  gap: 8px;
+  padding: 20px;
+  background: rgba(251, 250, 248, 0.95);
+}
+
+.upload-overlay.visible {
+  display: grid;
+}
+
+.upload-title {
+  margin: 0;
+  font-size: 23px;
+  letter-spacing: 0.2px;
+}
+
+.upload-subtitle {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.chip-btn,
+.reset-btn {
+  border: 0;
+  border-radius: 999px;
+  background: var(--chip);
+  color: #fff;
+  padding: 10px 16px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.reset-btn {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  padding: 8px 16px;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.prompt-wrap {
+  display: grid;
+  grid-template-columns: 1fr 46px;
+  gap: 8px;
+  align-items: center;
+  background: var(--field);
+  border-radius: 14px;
+  padding: 8px 10px 6px;
+}
+
+#prompt-input {
+  border: 0;
+  background: transparent;
+  outline: none;
+  font-size: 14px;
+  font-family: Georgia, "Times New Roman", serif;
+  color: #4b4b4b;
+}
+
+#add-btn {
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font-size: 34px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.status {
+  margin: 0;
+  min-height: 18px;
+  font-size: 12px;
+  color: #666;
+  text-align: center;
+}
