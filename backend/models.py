@@ -14,20 +14,38 @@ class UserPhotosResponse(BaseModel):
 
 
 class TryOnRequest(BaseModel):
-    garment_image_url: str
-
-
-class TryOnAnalysis(BaseModel):
-    garment_type: str
-    fit_notes: str
+    image_url: str
 
 
 class TryOnResponse(BaseModel):
     status: str
+    session_id: str | None = None
     tryon_image_url: str | None = None
-    category: str | None = None
-    analysis: TryOnAnalysis | None = None
+    description: str | None = None
+    fit_notes: str | None = None
     error: str | None = None
+
+
+class ChatRequest(BaseModel):
+    session_id: str
+    message: str
+    image_url: str | None = None
+
+
+class ChatResponse(BaseModel):
+    status: str
+    session_id: str | None = None
+    tryon_image_url: str | None = None
+    description: str | None = None
+    fit_notes: str | None = None
+    error: str | None = None
+
+
+class ClassificationResult(BaseModel):
+    description: str
+    fit_notes: str
+    colors: list[str]
+    style: str
 
 
 class HealthResponse(BaseModel):
