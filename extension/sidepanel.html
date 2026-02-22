@@ -3,20 +3,19 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="popup.css" />
+    <link rel="stylesheet" href="sidepanel.css" />
     <title>Fitted</title>
   </head>
   <body>
     <main class="app">
       <header class="topbar">
-        <button id="back-btn" class="icon-btn" aria-label="Back">&#8592;</button>
         <h1>FITTED</h1>
-        <button class="icon-btn" aria-label="More">...</button>
+        <button id="reset-btn" class="icon-btn" aria-label="Reset">&#8635;</button>
       </header>
 
       <section class="canvas-wrap">
         <div class="canvas" id="canvas">
-          <img id="stage-img" alt="Uploaded person" />
+          <img id="stage-img" alt="Try-on result" />
           <div class="upload-overlay" id="upload-overlay">
             <p class="upload-title">Upload your photo</p>
             <p class="upload-subtitle">Use a full-body or upper-body image</p>
@@ -24,17 +23,23 @@
             <input id="upload-input" type="file" accept="image/*" hidden />
           </div>
         </div>
-        <button id="reset-btn" class="reset-btn">Reset</button>
       </section>
 
+      <div class="spinner" id="spinner">
+        <div class="spinner-dot"></div>
+        <span id="spinner-text">Generating try-on...</span>
+      </div>
+
+      <section class="garments-row" id="garments-row"></section>
+
       <section class="prompt-wrap">
-        <input id="prompt-input" type="text" placeholder="How would a black jacket look?" />
-        <button id="add-btn" aria-label="Try on latest">+</button>
+        <input id="prompt-input" type="text" placeholder="Make it blue, add a jacket..." />
+        <button id="send-btn" aria-label="Send">&#9654;</button>
       </section>
 
       <p id="status" class="status"></p>
     </main>
 
-    <script src="popup.js"></script>
+    <script src="sidepanel.js"></script>
   </body>
 </html>

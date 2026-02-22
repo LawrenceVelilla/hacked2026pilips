@@ -24,15 +24,16 @@ FLUX_MODEL = "black-forest-labs/flux-2-pro"
 
 IDENTITY_ANCHOR = (
     "Keep the same face along with the original facial structure, facial expression, "
-    "and skin tone. Keep the original hair. Same body type and proportions."
+    "and skin tone. Keep the original hair. Same body type, height, and proportions — "
+    "do NOT shrink or enlarge the person. The person must NOT wear glasses, sunglasses, "
+    "hats, face masks, headbands, or any accessories on the head or face unless the user "
+    "explicitly requests them. The person's face must be bare and unobstructed."
 )
 
 GARMENT_ANCHOR = (
     "Reproduce the clothing EXACTLY as shown — do not alter sleeve length, cuffs, "
     "collars, zippers, or any garment details. No rolling, cuffing, or tucking "
-    "unless explicitly described. Do NOT add any head or face accessories "
-    "(no hats, glasses, face masks, scarves on head, headbands) unless the user "
-    "explicitly requests them. Only apply clothing from the neck down."
+    "unless explicitly described. Only apply clothing from the neck down."
 )
 
 BASE_PROMPT = (
@@ -58,6 +59,26 @@ TEXT_MODIFY_PROMPT = (
 )
 
 
+ALLOWED_RATIOS = [
+    "1:1", "4:3", "3:4", "16:9", "9:16",
+    "3:2", "2:3", "4:5", "5:4", "21:9", "9:21",
+]
+
+
+def _pick_aspect_ratio(width: int, height: int) -> str:
+    """Pick the closest FLUX-supported aspect ratio for the given dimensions."""
+    target = width / height
+    best = "3:4"
+    best_diff = float("inf")
+    for ratio_str in ALLOWED_RATIOS:
+        w, h = map(int, ratio_str.split(":"))
+        diff = abs(target - w / h)
+        if diff < best_diff:
+            best_diff = diff
+            best = ratio_str
+    return best
+
+
 def resize_image(data: bytes) -> io.BytesIO:
     """Resize image so longest side is MAX_DIMENSION. Returns JPEG BytesIO."""
     img = Image.open(io.BytesIO(data)).convert("RGB")
@@ -68,26 +89,36 @@ def resize_image(data: bytes) -> io.BytesIO:
     return buf
 
 
-async def _download_and_resize(url: str) -> io.BytesIO:
-    """Download an image from URL and resize it."""
+def get_image_dimensions(data: bytes) -> tuple[int, int]:
+    """Get width and height of an image from bytes."""
+    img = Image.open(io.BytesIO(data))
+    return img.size
+
+
+async def _download(url: str) -> bytes:
+    """Download raw bytes from URL."""
     async with httpx.AsyncClient() as client:
         resp = await client.get(url)
         resp.raise_for_status()
-    return resize_image(resp.content)
-
-
-def _resize_local_file(path: str) -> io.BytesIO:
-    """Load a local file and resize it."""
-    return resize_image(Path(path).read_bytes())
+    return resp.content
 
 
 async def _prepare_image(url_or_path: str) -> io.BytesIO:
     """Prepare an image from either a local path or URL."""
-    # Check if it's a localhost URL pointing to photos/
     local_path = url_or_path.replace("http://localhost:8000/", "")
     if Path(local_path).exists():
-        return _resize_local_file(local_path)
-    return await _download_and_resize(url_or_path)
+        raw = Path(local_path).read_bytes()
+    else:
+        raw = await _download(url_or_path)
+    return resize_image(raw)
+
+
+async def _load_raw(url_or_path: str) -> bytes:
+    """Load raw image bytes from URL or local path."""
+    local_path = url_or_path.replace("http://localhost:8000/", "")
+    if Path(local_path).exists():
+        return Path(local_path).read_bytes()
+    return await _download(url_or_path)
 
 
 async def generate_tryon(
@@ -106,7 +137,12 @@ async def generate_tryon(
         - Text modify: user photo + previous result (2 images, new prompt)
     """
     try:
-        user_buf = await _prepare_image(user_photo_url)
+        # Compute aspect ratio from user photo to preserve proportions
+        user_raw = await _load_raw(user_photo_url)
+        user_w, user_h = get_image_dimensions(user_raw)
+        aspect_ratio = _pick_aspect_ratio(user_w, user_h)
+
+        user_buf = resize_image(user_raw)
 
         if previous_result_url and new_item_image_url:
             # Layering: user + current look + new item
@@ -131,7 +167,7 @@ async def generate_tryon(
             input={
                 "prompt": prompt,
                 "input_images": input_images,
-                "aspect_ratio": "3:4",
+                "aspect_ratio": aspect_ratio,
                 "output_format": "webp",
                 "output_quality": 90,
                 "safety_tolerance": 2,
