@@ -24,16 +24,15 @@ FLUX_MODEL = "black-forest-labs/flux-2-pro"
 
 IDENTITY_ANCHOR = (
     "Keep the same face along with the original facial structure, facial expression, "
-    "and skin tone. Keep the original hair. Same body type, height, and proportions — "
-    "do NOT shrink or enlarge the person. The person must NOT wear glasses, sunglasses, "
-    "hats, face masks, headbands, or any accessories on the head or face unless the user "
-    "explicitly requests them. The person's face must be bare and unobstructed."
+    "and skin tone. Keep the original hair. Same body type and proportions."
 )
 
 GARMENT_ANCHOR = (
     "Reproduce the clothing EXACTLY as shown — do not alter sleeve length, cuffs, "
     "collars, zippers, or any garment details. No rolling, cuffing, or tucking "
-    "unless explicitly described. Only apply clothing from the neck down."
+    "unless explicitly described. Do NOT add any head or face accessories "
+    "(no hats, glasses, face masks, scarves on head, headbands) unless the user "
+    "explicitly requests them. Only apply clothing from the neck down."
 )
 
 BASE_PROMPT = (
