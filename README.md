@@ -124,7 +124,7 @@ uvicorn backend.main:app --reload
 
 ## Team
 
-- Jordan Dantonio - Frontend and Popup Design and Wiring
+- Jordan Antonio - Frontend and Popup Design and Wiring
 - Lawrence Velilla - Backend wiring and AI Agents
 
 Built at HackED 2026.
