@@ -54,9 +54,9 @@ h1 {
 .canvas-wrap {
   flex: 1 1 0;
   position: relative;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: #fbfaf8;
+  border: none;
+  border-radius: 0;
+  background: var(--bg);
   overflow: hidden;
   min-height: 400px;
 }

@@ -41,32 +41,44 @@ function setStageImage(src) {
 
 // --- Initialize ---
 
+// If the cached image URL fails to load, clear it and show upload
+stageImg.addEventListener("error", () => {
+  chrome.storage.local.remove([STORAGE_USER_PHOTO]);
+  basePhotoUrl = "";
+  stageImg.removeAttribute("src");
+  showUploadOverlay(true);
+  setStatus("Photo not found. Please re-upload.");
+});
+
 async function initialize() {
+  // Always check the backend first for the freshest photo URL
+  try {
+    const resp = await fetch(`${BACKEND_URL}/user-photos`);
+    if (resp.ok) {
+      const data = await resp.json();
+      const url = data.full_body || data.upper_body || "";
+      if (url) {
+        basePhotoUrl = url;
+        await chrome.storage.local.set({ [STORAGE_USER_PHOTO]: url });
+        setStageImage(url);
+        setStatus("");
+        refreshGarments();
+        return;
+      }
+    }
+  } catch {
+    // Backend not running — fall through to storage
+  }
+
+  // Fallback to cached URL in storage
   const state = await chrome.storage.local.get([STORAGE_USER_PHOTO]);
   if (state[STORAGE_USER_PHOTO]) {
     basePhotoUrl = state[STORAGE_USER_PHOTO];
     setStageImage(basePhotoUrl);
     setStatus("");
   } else {
-    try {
-      const resp = await fetch(`${BACKEND_URL}/user-photos`);
-      if (resp.ok) {
-        const data = await resp.json();
-        const url = data.full_body || data.upper_body || "";
-        if (url) {
-          basePhotoUrl = url;
-          await chrome.storage.local.set({ [STORAGE_USER_PHOTO]: url });
-          setStageImage(url);
-          setStatus("");
-        } else {
-          showUploadOverlay(true);
-          setStatus("Upload your photo to start.");
-        }
-      }
-    } catch {
-      showUploadOverlay(true);
-      setStatus("Upload your photo to start.");
-    }
+    showUploadOverlay(true);
+    setStatus("Upload your photo to start.");
   }
 
   refreshGarments();
