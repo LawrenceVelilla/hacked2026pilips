@@ -109,14 +109,18 @@ uvicorn backend.main:app --reload
 
 ## Future Roadmap
 
-- **User accounts & database** — Persistent profiles, saved try-on history, photo management
-- **Cloud deployment** — Hosted backend with cloud ML model serving (currently localhost)
+- **User accounts & database** — Persistent profiles, saved try-on history, photo management and caching.
+- **Cloud deployment** — Hosted backend with cloud ML model serving.
 - **Model fine-tuning** — Custom models trained on diverse body types for better representation
 - **Expanded body forms** — Dedicated support for paraplegic users, prosthetics, seated poses, and other body forms that are underrepresented in fashion tech
 - **More platforms** — Extend beyond Pinterest to ASOS, Zara, H&M, and other clothing sites
 - **Shoe try-on** — Lower body and footwear virtual try-on
 - **Buy links** — Scrape Pinterest product tags and surface purchase links alongside try-on results
 - **Lighter deployment** — Switch from u2net (172MB) to u2netp (~4MB) for faster installs
+
+## Notes
+- The more layers to try to change, the more likely the facial integrity degrades. This is due to the fact that the model, with a security constraint of 5, will change a little bit of face each time. Lowering this constraint will likely improve the facial integrity, but will compromise some of the details of the outfit.
+- Note that everytime you press the try on button, it will store 12 outfits in the queue which you can scroll through but after you pick a new one, and want to see the old outfit, you'd have to regenerate it. This is because there is no caching yet.
 
 ## Team
 
