@@ -1,0 +1,34 @@
+{
+  "manifest_version": 3,
+  "name": "Fitted",
+  "version": "0.1.0",
+  "description": "Try on Pinterest outfits with your photo.",
+  "action": {
+    "default_title": "Fitted"
+  },
+  "permissions": ["storage", "activeTab", "scripting", "sidePanel"],
+  "host_permissions": [
+    "https://pinterest.com/*",
+    "https://*.pinterest.com/*",
+    "https://pinterest.ca/*",
+    "https://*.pinterest.ca/*"
+  ],
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://pinterest.com/*",
+        "https://*.pinterest.com/*",
+        "https://pinterest.ca/*",
+        "https://*.pinterest.ca/*"
+      ],
+      "js": ["content.js"],
+      "css": ["content.css"]
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+}

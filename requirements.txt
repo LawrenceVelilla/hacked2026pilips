@@ -4,3 +4,6 @@ httpx
 replicate
 python-dotenv
 python-multipart
+google-genai
+Pillow
+rembg[cpu]

@@ -139,7 +139,6 @@ async def main():
 
     print(f"Step 2 result: {step2_url}\n")
 
-    # ---- Summary ----
     print("=== RESULTS ===")
     print(f"  Step 1 (hoodie only):          {step1_url}")
     print(f"  Step 2 (jacket over hoodie):   {step2_url}")

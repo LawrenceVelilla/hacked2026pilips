@@ -1,0 +1,36 @@
+:root {
+  --fitted-black: #111111;
+}
+
+.fitted-tryon-btn {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  background: var(--fitted-black);
+  color: white;
+  border: 0;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 12px;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 120ms ease, transform 120ms ease;
+  z-index: 20;
+}
+
+.fitted-hover-wrap:hover .fitted-tryon-btn {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.fitted-pin-action-btn {
+  background: var(--fitted-black);
+  color: #fff;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+}

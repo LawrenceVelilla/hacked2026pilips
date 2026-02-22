@@ -9,3 +9,6 @@ BASE_URL: str = os.getenv("BASE_URL", "http://localhost:8000")
 
 PHOTOS_DIR: str = "photos"
 VALID_PHOTO_TYPES: list[str] = ["face", "upper_body", "full_body"]
+
+MAX_DIMENSION: int = 1024
+SESSION_TTL_SECONDS: int = 3600
